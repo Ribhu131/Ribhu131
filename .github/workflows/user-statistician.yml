@@ -1,0 +1,31 @@
+name: Generate GitHub Statistics
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/user-statistician.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Generate GitHub statistics
+        uses: cicirello/user-statistician@v1
+        with:
+          colors: dark
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
